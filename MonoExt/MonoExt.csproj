@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="MonoGame.Framework">
+      <HintPath>..\..\..\..\MonoGame.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpHelper">
+      <HintPath>..\..\SharpHelper\SharpHelper\bin\Release\netstandard2.0\SharpHelper.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

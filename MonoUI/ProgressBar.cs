@@ -20,22 +20,6 @@ namespace MonoUI
 
         protected override void ShowControl(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            /*
-            if (Gradient.stops.Length == 0)
-            {
-                throw new InvalidOperationException("There must be at least 1 stop in this gradient.");
-            } else if (Gradient.stops.Length == 1)
-            {
-                spriteBatch.Draw(SpecialContent.Pixel, new Rectangle(Position, new Point((int)(Size.X * Value), Size.Y)), Gradient.stops[0].color);
-            } else
-            {
-                for (int i = 0; i < Size.X * Value; i++)
-                {
-                    
-                }
-            }
-            */
-
             spriteBatch.Begin(samplerState: SamplerState.PointClamp, transformMatrix: manager.Matrix);
 
             spriteBatch.Draw(SpecialContent.Pixel, new Rectangle(Position, new Point((int)(Size.X * Value), Size.Y)), BarColor);

@@ -310,6 +310,26 @@ namespace Microsoft.Xna.Framework
         }
 
         /// <summary>
+        /// Gets whether or not the provided <see cref="RectangleF"/> lies within the bounds of this <see cref="RectangleF"/>.
+        /// </summary>
+        /// <param name="value">The <see cref="RectangleF"/> to check for inclusion in this <see cref="RectangleF"/>.</param>
+        /// <returns><c>true</c> if the provided <see cref="RectangleF"/>'s bounds lie entirely inside this <see cref="RectangleF"/>; <c>false</c> otherwise.</returns>
+        public bool Contains(RectangleF value)
+        {
+            return ((((this.X <= value.X) && ((value.X + value.Width) <= (this.X + this.Width))) && (this.Y <= value.Y)) && ((value.Y + value.Height) <= (this.Y + this.Height)));
+        }
+
+        /// <summary>
+        /// Gets whether or not the provided <see cref="RectangleF"/> lies within the bounds of this <see cref="Rectangle"/>.
+        /// </summary>
+        /// <param name="value">The <see cref="RectangleF"/> to check for inclusion in this <see cref="RectangleF"/>.</param>
+        /// <param name="result"><c>true</c> if the provided <see cref="RectangleF"/>'s bounds lie entirely inside this <see cref="Rectangle"/>; <c>false</c> otherwise. As an output parameter.</param>
+        public void Contains(ref RectangleF value, out bool result)
+        {
+            result = ((((this.X <= value.X) && ((value.X + value.Width) <= (this.X + this.Width))) && (this.Y <= value.Y)) && ((value.Y + value.Height) <= (this.Y + this.Height)));
+        }
+
+        /// <summary>
         /// Compares whether current instance is equal to specified <see cref="Object"/>.
         /// </summary>
         /// <param name="obj">The <see cref="Object"/> to compare.</param>
@@ -405,7 +425,7 @@ namespace Microsoft.Xna.Framework
         /// <param name="value1">The first <see cref="Rectangle"/>.</param>
         /// <param name="value2">The second <see cref="Rectangle"/>.</param>
         /// <returns>Overlapping region of the two rectangles.</returns>
-        public static Rectangle Intersect(RectangleF value1, RectangleF value2)
+        public static RectangleF Intersect(RectangleF value1, RectangleF value2)
         {
             Intersect(ref value1, ref value2, out RectangleF rectangle);
             return rectangle;

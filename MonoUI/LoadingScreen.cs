@@ -40,21 +40,10 @@ namespace MonoUI
             });
 
             progress = new Progress<float>(x => progressBar.Value = x);
-
-            //loadingTasks.Enqueue(("Loading sounds...", new Task(() => SoundManager.LoadSounds(new Progress<float>(x => progressBar.Value = x)))));
-
-            //task.Start();
         }
 
         public async void DoTasks((string, Action)[] tasks, Action end = null)
         {
-            /*
-            loadingTasks = new Queue<(string, Task)>();
-
-            foreach (var item in tasks)
-                loadingTasks.Enqueue(item);
-            */
-
             for (int i = 0; i < tasks.Length; i++)
             {
                 progressBar.Value = 0;
@@ -66,7 +55,6 @@ namespace MonoUI
                 try
                 {
                     await current;
-                    //Thread.Sleep(100);
                     current.Dispose();
                 }
                 catch

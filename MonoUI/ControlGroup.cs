@@ -13,6 +13,9 @@ namespace MonoUI
 
         public Matrix Matrix { get; set; } = Matrix.Identity;
 
+        public bool IsActive { get; set; } = true;
+        public bool IsVisible { get; set; } = true;
+
         protected Point GetMousePos()
         {
             return Input.MousePosition;
@@ -20,29 +23,34 @@ namespace MonoUI
 
         public override void Update(GameTime gameTime)
         {
-            for (int i = 0; i < components.Count; i++)
+            if (IsActive)
             {
-                components[i].Update(gameTime);
+                for (int i = 0; i < components.Count; i++)
+                {
+                    // Updates all components if the group is active.
+                    components[i].Update(gameTime);
+                }
             }
         }
 
         public override void Show(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            //spriteBatch.Begin(samplerState: SamplerState.PointClamp, transformMatrix:Matrix);
-            //spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, null, null, rState);
-
-            for (int i = 0; i < components.Count; i++)
+            if (IsVisible)
             {
-                components[i].Show(gameTime, spriteBatch);
+                for (int i = 0; i < components.Count; i++)
+                {
+                    // Updates all components if the group is visible.
+                    components[i].Show(gameTime, spriteBatch);
+                }
             }
             
-            //spriteBatch.End();
         }
 
         public void Dispose()
         {
             for (int i = 0; i < components.Count; i++)
             {
+                // Dispose all components.
                 components[i].Dispose();
             }
 

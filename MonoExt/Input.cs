@@ -6,10 +6,10 @@ namespace MonoExt
 {
     public static class Input
     {
-        private static MouseState lastMouseState;
+        private static MouseState? lastMouseState;
         private static MouseState mouseState;
 
-        private static KeyboardState lastKeyboardState;
+        private static KeyboardState? lastKeyboardState;
         private static KeyboardState keyboardState;
 
         public static Texture2D CursorTex { get; private set; }
@@ -43,9 +43,10 @@ namespace MonoExt
         public static int MouseX => mouseState.X;
         public static int MouseY => mouseState.Y;
 
-        public static Point LastMousePosition => lastMouseState.Position;
-        public static int LastMouseX => lastMouseState.X;
-        public static int LastMouseY => lastMouseState.Y;
+        static MouseState GetLastMouseState => lastMouseState ?? mouseState;
+        public static Point LastMousePosition => GetLastMouseState.Position;
+        public static int LastMouseX => LastMousePosition.X;
+        public static int LastMouseY => LastMousePosition.Y;
 
         public static bool LeftMouseDown()
         {
@@ -59,12 +60,32 @@ namespace MonoExt
 
         public static bool LeftMousePressed()
         {
-            return game.IsActive && mouseState.LeftButton == ButtonState.Pressed && lastMouseState.LeftButton == ButtonState.Released;
+            return game.IsActive && mouseState.LeftButton == ButtonState.Pressed && GetLastMouseState.LeftButton == ButtonState.Released;
         }
 
         public static bool LeftMouseReleased()
         {
-            return !game.IsActive || mouseState.LeftButton == ButtonState.Released && lastMouseState.LeftButton == ButtonState.Pressed;
+            return !game.IsActive || mouseState.LeftButton == ButtonState.Released && GetLastMouseState.LeftButton == ButtonState.Pressed;
+        }
+
+        public static bool MiddleMouseDown()
+        {
+            return game.IsActive && mouseState.MiddleButton == ButtonState.Pressed;
+        }
+
+        public static bool MiddleMouseUp()
+        {
+            return !game.IsActive || mouseState.MiddleButton == ButtonState.Released;
+        }
+
+        public static bool MiddleMousePressed()
+        {
+            return game.IsActive && mouseState.MiddleButton == ButtonState.Pressed && GetLastMouseState.MiddleButton == ButtonState.Released;
+        }
+
+        public static bool MiddleMouseReleased()
+        {
+            return !game.IsActive || mouseState.MiddleButton == ButtonState.Released && GetLastMouseState.MiddleButton == ButtonState.Pressed;
         }
 
         public static bool RightMouseDown()
@@ -79,12 +100,12 @@ namespace MonoExt
 
         public static bool RightMousePressed()
         {
-            return game.IsActive && mouseState.RightButton == ButtonState.Pressed && lastMouseState.RightButton == ButtonState.Released;
+            return game.IsActive && mouseState.RightButton == ButtonState.Pressed && GetLastMouseState.RightButton == ButtonState.Released;
         }
 
         public static bool RightMouseReleased()
         {
-            return !game.IsActive || mouseState.RightButton == ButtonState.Released && lastMouseState.RightButton == ButtonState.Pressed;
+            return !game.IsActive || mouseState.RightButton == ButtonState.Released && GetLastMouseState.RightButton == ButtonState.Pressed;
         }
 
         public static bool InRectBounds(Rectangle rect)
@@ -111,12 +132,15 @@ namespace MonoExt
 
         public static int GetScrollDelta()
         {
-            return game.IsActive ? (mouseState.ScrollWheelValue - lastMouseState.ScrollWheelValue) : 0;
+            return game.IsActive ? (mouseState.ScrollWheelValue - GetLastMouseState.ScrollWheelValue) : 0;
         }
 
         #endregion
 
         #region Keyboard Functions
+
+        static KeyboardState GetLastKeyboardState => lastKeyboardState ?? keyboardState;
+
         public static bool KeyDown(Keys key)
         {
             return keyboardState.IsKeyDown(key);
@@ -129,12 +153,12 @@ namespace MonoExt
 
         public static bool KeyPressed(Keys key)
         {
-            return keyboardState.IsKeyDown(key) && lastKeyboardState.IsKeyUp(key);
+            return keyboardState.IsKeyDown(key) && GetLastKeyboardState.IsKeyUp(key);
         }
 
         public static bool KeyReleased(Keys key)
         {
-            return keyboardState.IsKeyUp(key) && lastKeyboardState.IsKeyDown(key);
+            return keyboardState.IsKeyUp(key) && GetLastKeyboardState.IsKeyDown(key);
         }
 
         public static Keys[] AllPressedKeys()

@@ -16,13 +16,14 @@ namespace MonoUI
         public int Left { get => Position.X; set { Position.X = value; } }
         public int Top { get => Position.Y; set { Position.Y = value; } }
 
-        public bool active = true;
+        public bool IsActive { get; set; } = true;
+        public bool IsVisible { get; set; } = true;
 
         public string Tag { get; set; }
 
         public override void Update(GameTime gameTime)
         {
-            if (active)
+            if (IsActive)
             {
                 UpdateControl(gameTime);
             }
@@ -30,7 +31,7 @@ namespace MonoUI
 
         public override void Show(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            if (active)
+            if (IsVisible)
             {
                 ShowControl(gameTime, spriteBatch);
             }

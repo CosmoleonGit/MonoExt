@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using MonoExt;
 
 namespace MonoCamera2D
 {
@@ -10,10 +11,16 @@ namespace MonoCamera2D
             offsetMatrix = Matrix.CreateTranslation(new Vector3(size / 2, 0f));
         }
 
+        public Camera2D(float w, float h)
+        {
+            size = new Vector2(w, h);
+            offsetMatrix = Matrix.CreateTranslation(new Vector3(size / 2, 0f));
+        }
+
         public Vector2 position;
         public Vector2 size;
 
-        public float Zoom { get; set; } = 1.5f;
+        public float Zoom { get; set; } = 1f;
 
         public Vector2 RelativeSize => size / Zoom;
 
@@ -26,6 +33,14 @@ namespace MonoCamera2D
         public float Right => position.X + RelativeSize.X / 2;
         public float Top => position.Y - RelativeSize.Y / 2;
         public float Bottom => position.Y + RelativeSize.Y / 2;
+
+        public RectangleF Rectangle
+        {
+            get
+            {
+                return new RectangleF(Left, Top, RelativeSize.X, RelativeSize.Y);
+            }
+        }
 
         public Matrix GetProjection()
         {

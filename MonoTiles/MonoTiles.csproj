@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MonoExt\MonoExt.csproj" />
+    <ProjectReference Include="..\MonoCamera2D\MonoCamera2D.csproj" />
   </ItemGroup>
 
   <ItemGroup>

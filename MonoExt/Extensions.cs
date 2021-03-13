@@ -35,6 +35,7 @@ namespace MonoExt
 
         public static void DrawLine(this SpriteBatch spriteBatch, Vector2 start, Vector2 end, Color color, float thickness = 1)
         {
+            // Calculates the angle between the two points and uses it to draw a line between them.
             Vector2 diff = end - start;
             float angle = (float)Math.Atan2(diff.X, diff.Y) * -1 + MathHelper.PiOver2;
 
@@ -50,12 +51,14 @@ namespace MonoExt
 
         }
 
-        public static void DrawRectangle(this SpriteBatch spriteBatch, Rectangle rectangle, Color color, int lineWidth)
+        public static void DrawRectangle(this SpriteBatch spriteBatch, RectangleF rectangle, Color color, float thickness = 1)
         {
-            spriteBatch.Draw(SpecialContent.Pixel, new Rectangle(rectangle.X, rectangle.Y, lineWidth, rectangle.Height + lineWidth), color);
-            spriteBatch.Draw(SpecialContent.Pixel, new Rectangle(rectangle.X, rectangle.Y, rectangle.Width + lineWidth, lineWidth), color);
-            spriteBatch.Draw(SpecialContent.Pixel, new Rectangle(rectangle.X + rectangle.Width, rectangle.Y, lineWidth, rectangle.Height + lineWidth), color);
-            spriteBatch.Draw(SpecialContent.Pixel, new Rectangle(rectangle.X, rectangle.Y + rectangle.Height, rectangle.Width + lineWidth, lineWidth), color);
+            // Draws 4 lines making a rectangle.
+
+            spriteBatch.DrawLine(new Vector2(rectangle.X, rectangle.Y), new Vector2(rectangle.Right, rectangle.Y), color, thickness);
+            spriteBatch.DrawLine(new Vector2(rectangle.X, rectangle.Bottom), new Vector2(rectangle.Right, rectangle.Bottom), color, thickness);
+            spriteBatch.DrawLine(new Vector2(rectangle.X, rectangle.Y), new Vector2(rectangle.X, rectangle.Bottom), color, thickness);
+            spriteBatch.DrawLine(new Vector2(rectangle.Right, rectangle.Y), new Vector2(rectangle.Right, rectangle.Bottom), color, thickness);
         }
 
         #endregion
@@ -72,5 +75,29 @@ namespace MonoExt
         }
 
         #endregion
+
+        public static float Multiplier(this GameTime gameTime)
+        {
+            return (float)gameTime.ElapsedGameTime.TotalMilliseconds / 20;
+        }
+
+        public static void Flip(this ref Vector2 vector2)
+        {
+            // Flips the X and Y values of the vector,
+            vector2 = new Vector2(vector2.Y, vector2.X);
+        }
+
+        public static void Shuffle<T>(this IList<T> list, Random rnd)
+        {
+            int n = list.Count;
+            while (n > 1)
+            {
+                n--;
+                int k = rnd.Next(n + 1);
+                T value = list[k];
+                list[k] = list[n];
+                list[n] = value;
+            }
+        }
     }
 }

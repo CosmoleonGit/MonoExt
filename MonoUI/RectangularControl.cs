@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using MonoExt;
 
 namespace MonoUI
 {
@@ -24,6 +26,19 @@ namespace MonoUI
             set
             {
                 Position = value - new Point(Size.X / 2, Size.Y / 2);
+            }
+        }
+
+        public bool ShowBorder { get; set; } = false;
+
+        public Color BorderColor { get; set; } = Color.Black;
+        public float BorderThickness { get; set; } = 1f;
+
+        protected override void ShowControl(GameTime gameTime, SpriteBatch spriteBatch)
+        {
+            if (ShowBorder)
+            {
+                spriteBatch.DrawRectangle((RectangleF)Rectangle, BorderColor, BorderThickness);
             }
         }
     }

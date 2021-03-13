@@ -5,8 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MonoExt\MonoExt.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="MonoGame.Framework">
-      <HintPath>..\..\..\..\MonoGame.Framework.dll</HintPath>
+      <HintPath>..\..\..\..\.nuget\packages\monogame.framework.windowsdx\3.8.0.1641\lib\netcoreapp3.1\MonoGame.Framework.dll</HintPath>
     </Reference>
   </ItemGroup>
 

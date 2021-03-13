@@ -1,13 +1,14 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <Reference Include="MonoExt">
-      <HintPath>..\MonoExt\bin\Release\netstandard2.0\MonoExt.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\MonoCamera2D\MonoCamera2D.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="MonoGame.Framework">
       <HintPath>..\..\..\..\.nuget\packages\monogame.framework.windowsdx\3.8.0.1641\lib\netcoreapp3.1\MonoGame.Framework.dll</HintPath>
     </Reference>

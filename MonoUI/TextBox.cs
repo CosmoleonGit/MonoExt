@@ -12,29 +12,67 @@ namespace MonoUI
         public TextBox(ControlGroup manager, GameWindow window) : base(manager)
         {
             window.TextInput += Window_TextInput;
+
+            builder = new StringBuilder();
         }
 
         private void Window_TextInput(object sender, TextInputEventArgs e)
         {
             if (state == State.FOCUSED)
             {
-                if (e.Character == 8)
+                switch ((int)e.Character)
                 {
-                    if (Text != "") Text = text.Substring(0, text.Length - 1);
-                }
-                else if (e.Character == 13)
-                {
-                    EnterPressed?.Invoke();
-                }
-                else if (Font.Characters.Contains(e.Character))
-                {
-                    Text += e.Character;
+                    case 8:
+                        // BACKSPACE
+
+                        if (builder.Length != 0)
+                            builder.Remove(builder.Length - 1, 1);
+
+                        break;
+                    case 13:
+                        // ENTER
+
+                        EnterPressed?.Invoke();
+                        break;
+                    default:
+                        if (Font.Characters.Contains(e.Character))
+                            AppendText(e.Character);
+
+                        break;
                 }
             }
         }
 
-        private string text = "";
-        public string Text { get { return text; } set { text = value; textSize = Font.MeasureString(text).ToPoint(); offset = Math.Max(0, textSize.X - Size.X + textLeft); } }
+        private readonly StringBuilder builder;
+        public string Text { get { return builder.ToString(); } set { builder.Clear(); builder.Append(value); ResetOffset(); } }
+
+        public int MaximumLength { get; set; } = int.MaxValue;
+
+        void ResetOffset()
+        {
+            textSize = Font.MeasureString(builder).ToPoint();
+            offset = Math.Max(0, textSize.X - Size.X + textLeft);
+        }
+
+        public void AppendText(string s)
+        {
+            builder.Append(s);
+            ResetOffset();
+        }
+
+        public void AppendText(char c)
+        {
+            builder.Append(c);
+            ResetOffset();
+        }
+
+        public void RemoveText(int startIndex, int length)
+        {
+            builder.Remove(startIndex, length);
+            ResetOffset();
+        }
+
+
 
         public SpriteFont Font { get; set; }
 
@@ -119,7 +157,7 @@ namespace MonoUI
             Rectangle currentRect = spriteBatch.GraphicsDevice.ScissorRectangle;
             spriteBatch.GraphicsDevice.ScissorRectangle = Rectangle.TransformMatrix(manager.Matrix);
 
-            spriteBatch.DrawString(Font, text, Position.ToVector2() + new Vector2(textLeft - offset, Size.Y / 2 - textSize.Y / 2), textColour);
+            spriteBatch.DrawString(Font, builder, Position.ToVector2() + new Vector2(textLeft - offset, Size.Y / 2 - textSize.Y / 2), textColour);
 
             spriteBatch.GraphicsDevice.ScissorRectangle = currentRect;
 
